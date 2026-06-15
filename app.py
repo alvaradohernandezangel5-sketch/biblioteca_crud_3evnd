@@ -1,9 +1,9 @@
-from Dao.libro_dao import libroDAO
+from Dao.libro_dao import LibroDAO
 from Models.libro import libro
 
 def main():
     try:
-        libro_dao =  libroDAO()
+        libro_dao =  LibroDAO()
         libros = libro_dao.obtener_libros()
 
         print("libros en la biblioteca: ")
