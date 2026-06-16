@@ -1,5 +1,5 @@
 # Clase libro
-class libro:
+class Libro:
 
     #Metodo constructor
     def __init__(self, id, titulo, autor, isbn, disponible):

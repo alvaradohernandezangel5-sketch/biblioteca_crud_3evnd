@@ -1,26 +1,26 @@
-#DAO : Data Access Object
-#Es una clase que se encarga de acceder 
+# DAO: Data Access Object
+# Es una clase que se encarga de acceder 
 # a la base de datos y realizar las operaciones
 
-from DataBase.conexion import Conexion
-from Models.libro import libro
+from database.conexion import Conexion
+from Models.libro import Libro
 
 class LibroDAO:
 
     # Select * from libros
     def obtener_libros(self):
-        Conexion = Conexion.obtener_conexion()
-        cursor = Conexion.cursor()
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
 
         # Ejecuta la consulta
-        cursor.execute("SELECT * FROM libros")
+        cursor.execute("SELECT * FROM libro")
         # Obtiene los resultados
         registros = cursor.fetchall()
 
-        # Crear una lista de clase libro 
+        # Crear una lista de clase Libro
         libros = []
         for registro in registros:
-            libro = libro(
+            libro = Libro(
                 id=registro[0],
                 titulo=registro[1],
                 autor=registro[2],
@@ -28,65 +28,63 @@ class LibroDAO:
                 disponible=registro[4]
             )
             libros.append(libro)
-        # Cerrar la conexion
+        # Cerrar la conexión   
         cursor.close()
-        Conexion.close()
+        conexion.close()
         return libros
     
     # Insert
     def insertar(self, libro):
-        Conexion = Conexion.obtener_conexion()
-        cursor = Conexion.cursor()
+        conexion= Conexion.obtener_conexion()
+        cursor = conexion.cursor()
 
-        sql = """
+        sql = """"
         INSERT INTO libro(titulo, autor, isbn, disponible)
         VALUES (%s, %s, %s, %s)
         """
-        
+
         cursor.execute(sql,(
-            libro.titulo,
+            libro.titulo, 
             libro.autor,
             libro.isbn,
             libro.disponible
         ))
 
-        Conexion.commit()
+        conexion.commit()
         cursor.close()
-        Conexion.close()
+        conexion.close()
 
-
+    # Update
     def actualizar(self, libro):
-        Conexion = Conexion.obtener_conexion()
-        cursor = Conexion.cursor()
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
 
-        sql = """
-                 UPDATE libro
-                 SET titulo = %s, autor=%x,
-                 isbn = %s, disponible = %s
-                 WHERE id = %s
+        sql= """
+                UPDATE libro
+                SET titulo = %s, autor=%x,
+                isbn=%s, disponible=%s
+                WHERE id = %s
         """
 
         cursor.execute(sql, (
-            libro.titulo,
-            libro.autor,
+            libro.titulo, 
+            libro.autor, 
             libro.isbn,
             libro.disponible,
             libro.id
         ))
 
-        Conexion.commit()
+        conexion.commit()
         cursor.close()
-        Conexion.close()
+        conexion.close()
 
-    def elimiar(self, id):
-        Conexion = Conexion.obtener_conexion()
-        cursor = Conexion.cursor()
+    def eliminar(self, id):
+        conexion = Conexion.obtener_conexion()
+        cursor = conexion.cursor()
 
         cursor.execute("DELETE FROM libro WHERE id = %s",
             (id))
-        Conexion.commit()
+        conexion.commit()
         cursor.close()
-        Conexion.close()
-
-
+        conexion.close()
 
