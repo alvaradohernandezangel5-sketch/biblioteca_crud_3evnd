@@ -12,20 +12,8 @@ class LibroDAO:
         conexion = Conexion.obtener_conexion()
         cursor = conexion.cursor()
 
-        sql = """
-            SELECT 
-                l.id_libro,
-                l.titulo,
-                a.nombre as autor,
-                l.isbn,
-                l.disponible
-            FROM libro l
-            INNER JOIN autor a
-            ON l.autor = a.id
-        """
-
-        # Ejecuta la consulta
-        cursor.execute(sql)
+        # Ejecuta la consulta almacenada (vista)
+        cursor.execute("SELECT * FROM vista_libros")
         # Obtiene los resultados
         registros = cursor.fetchall()
 
